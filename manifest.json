@@ -1,12 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "Hello World Extension",
+  "name": "Keka Office Hours",
   "version": "1.0",
-  "description": "Hello World only on Keka Attendance Logs page",
+  "description": "This extension automatically tracks and shows your office hours on Keka.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
+
+  "icons": {
+    "48": "icon.png"
+  },
+
   "background": {
     "service_worker": "background.js"
   },
