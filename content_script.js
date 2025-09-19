@@ -1,35 +1,29 @@
 // content_script.js
+clickAttendanceLogs();
 
-function notifyBackground() {
-  const isTarget = location.hash && location.hash.includes('/me/attendance/logs');
-  chrome.runtime.sendMessage({ targetPage: isTarget });
+/**
+ * Finds and clicks the attendance log dropdown.
+ * It retries every half-second because the button might be loaded by JavaScript after the DOM is ready.
+ */
+function clickAttendanceLogs() {
+  const interval = setInterval(() => {
+    const attendanceLogsButton = document.querySelector('employee-attendance-list-view .dropdown > div');
+    
+    if (attendanceLogsButton) {
+      attendanceLogsButton.click();
+      attendanceLogsButton.click();
+      console.log("✅ Attendance dropdown found and clicked.");
+      clearInterval(interval); // Stop searching once it's clicked.
+    } 
+    else {  
+      console.log("🔍 Attendance dropdown not found yet, retrying...");
+    }
+  }, 500); // Check every 500 milliseconds.
 }
 
-// initial check
-notifyBackground();
-
-// hash changes
-window.addEventListener('hashchange', notifyBackground);
-
-// catch history API navigations (pushState/replaceState)
-(function() {
-  const originalPush = history.pushState;
-  history.pushState = function() {
-    originalPush.apply(this, arguments);
-    notifyBackground();
-  };
-  const originalReplace = history.replaceState;
-  history.replaceState = function() {
-    originalReplace.apply(this, arguments);
-    notifyBackground();
-  };
-})();
-
-// (Your notifyBackground function can stay here if you have it)
-
+// This message listener should be active immediately to receive requests from the popup.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getStartTime") {
-    // We will replace this selector in the next step
     const selector = 'employee-attendance-list-view .card-body > .ng-star-inserted span.ki-green.ki-arrow-forward + span';
     let attempts = 0;
 
@@ -46,6 +40,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     }, 500);
 
-    return true;
+    return true; // Required for asynchronous sendResponse.
   }
 });

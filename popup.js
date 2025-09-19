@@ -6,6 +6,7 @@ const percentageValue = document.getElementById("percentage-value");
 const timePassedEl = document.getElementById("timePassed");
 const timeRemainingEl = document.getElementById("timeRemaining");
 const statusMessageEl = document.getElementById("statusMessage");
+const timerDisplayEl = document.querySelector(".timer-display");
 
 let timerInterval = null;
 
@@ -74,13 +75,14 @@ function init() {
     chrome.tabs.sendMessage(activeTabId, { action: "getStartTime" }, (response) => {
       // Check if we got a response and it has a startTime
       if (response && response.startTime) {
-        if (statusMessageEl) statusMessageEl.textContent = `Start time found: ${response.startTime}`;
-        console.log("Received start time from content script:", response.startTime);
+        if (statusMessageEl) statusMessageEl.textContent = `Clocked in at ${response.startTime}`;
         const startTime = parseKekaTime(response.startTime);
         
         // Start the timer with the fetched time
         updateTimer(startTime); // Initial call to display immediately
         timerInterval = setInterval(() => updateTimer(startTime), 1000);
+        timerDisplayEl.classList.remove('hidden');
+        document.querySelector(".container").classList.remove("compact");
 
       } else {
         // Handle the case where the time element wasn't found
