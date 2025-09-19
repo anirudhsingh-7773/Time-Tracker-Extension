@@ -1,11 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" href="./popup.css">
-    <title>Hello World</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <h1 id="message">Hello World!</h1>
-    <script src="./popup.js"></script>
+    <div class="container compact">
+      <h1>Time Tracker</h1>
+
+      <div class="timer-display">
+        <div class="progress-circle" id="progressCircle">
+          <div class="progress-circle-inner">
+            <div id="percentage-value">0%</div>
+            <div id="percentage-label">Passed</div>
+          </div>
+        </div>
+        <div class="time-stats">
+          <div class="stat-box">
+            <h3>Time Passed</h3>
+            <p id="timePassed">0h 0m 0s</p>
+          </div>
+          <div class="stat-box">
+            <h3>Time Remaining</h3>
+            <p id="timeRemaining">9h 0m 0s</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
   </body>
 </html>
