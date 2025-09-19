@@ -21,8 +21,8 @@ function updateTimer() {
   const percentage = (elapsedSeconds / NINE_HOURS_IN_SECONDS) * 100;
 
   // Update UI
-  timePassedEl.textContent = formatTime(elapsedSeconds);
-  timeRemainingEl.textContent = formatTime(remainingSeconds);
+  timePassedEl.innerHTML = formatTime(elapsedSeconds).replace("\n", "<br>");
+  timeRemainingEl.innerHTML = formatTime(remainingSeconds).replace("\n", "<br>");
   percentageValue.textContent = isCompleted ? "Done!" : `${Math.floor(percentage)}%`;
 
   // Update the CSS variable for progress circle
@@ -39,7 +39,7 @@ function formatTime(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  return `${hours}h ${minutes}m ${seconds}s`;
+  return `${hours}h ${minutes}m\n${seconds}s`;
 }
 
 // --- Initialize ---
