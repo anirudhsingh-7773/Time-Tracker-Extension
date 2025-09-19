@@ -24,3 +24,28 @@ window.addEventListener('hashchange', notifyBackground);
     notifyBackground();
   };
 })();
+
+// (Your notifyBackground function can stay here if you have it)
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "getStartTime") {
+    // We will replace this selector in the next step
+    const selector = 'employee-attendance-list-view .card-body > .ng-star-inserted span.ki-green.ki-arrow-forward + span';
+    let attempts = 0;
+
+    const findTimeElement = setInterval(() => {
+      const timeElement = document.querySelector(selector);
+      attempts++;
+
+      if (timeElement && timeElement.innerText) {
+        clearInterval(findTimeElement);
+        sendResponse({ startTime: timeElement.innerText });
+      } else if (attempts >= 10) {
+        clearInterval(findTimeElement);
+        sendResponse({ startTime: null });
+      }
+    }, 500);
+
+    return true;
+  }
+});
